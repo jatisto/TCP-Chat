@@ -28,3 +28,7 @@ Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\TCP-Chat.Vie
 Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\TCP-Chat.dll
 Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\TCP-Chat.pdb
 Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\TCP-Chat.csproj.CopyComplete
+Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\Razor\Views\Account\Login.g.cshtml.cs
+Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\Razor\Views\Account\Logout.g.cshtml.cs
+Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\Razor\Views\Account\Register.g.cshtml.cs
+Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\Razor\Views\Shared\LoginPartial.g.cshtml.cs

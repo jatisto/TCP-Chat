@@ -53,8 +53,8 @@ namespace TCP_Chat.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Registr (LoginVM loginVM) {
-            
+        public async Task<IActionResult> Register (LoginVM loginVM) {
+
             if (ModelState.IsValid) {
                 var user = new IdentityUser () { UserName = loginVM.UserName };
                 var result = await _userManager.CreateAsync (user, loginVM.Password);
