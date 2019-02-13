@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Win32;
 using TCP_Chat.Models;
 using TCP_Chat.ViewModels;
 
@@ -36,15 +37,39 @@ namespace TCP_Chat.Controllers {
             if (user != null) {
                 var result = await _signInManager.PasswordSignInAsync (user, loginVM.Password, false, false);
 
-                if (result.Succeeded) 
-                {
+                if (result.Succeeded) {
                     if (string.IsNullOrEmpty (loginVM.ReturnUrl))
-                        return RedirectToAction ("Index", "Home");                    
+                        return RedirectToAction ("Index", "Home");
                     return Redirect (loginVM.ReturnUrl);
-                }                
+                }
             }
-            ModelState.AddModelError("", "Логин или Пароль введены не верно");
-            return View(loginVM);
+            ModelState.AddModelError ("", "Логин или Пароль введены не верно");
+            return View (loginVM);
+        }
+
+        public IActionResult Register () {
+            return View ();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Registr (LoginVM loginVM) {
+            
+            if (ModelState.IsValid) {
+                var user = new IdentityUser () { UserName = loginVM.UserName };
+                var result = await _userManager.CreateAsync (user, loginVM.Password);
+
+                if (result.Succeeded) {
+                    return RedirectToAction ("Index", "Home");
+                }
+            }
+            return View (loginVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout () {
+            await _signInManager.SignOutAsync ();
+            return RedirectToAction ("Index", "Home");
         }
 
     }
