@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Win32;
@@ -10,6 +11,7 @@ using TCP_Chat.Models;
 using TCP_Chat.ViewModels;
 
 namespace TCP_Chat.Controllers {
+    
     public class AccountController : Controller {
 
         private readonly UserManager<IdentityUser> _userManager;
@@ -20,6 +22,7 @@ namespace TCP_Chat.Controllers {
             _signInManager = signInManager;
         }
 
+        [AllowAnonymous]
         public IActionResult Login (string returnUrl) {
             return View (new LoginVM () {
                 ReturnUrl = returnUrl
@@ -67,6 +70,7 @@ namespace TCP_Chat.Controllers {
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Logout () {
             await _signInManager.SignOutAsync ();
             return RedirectToAction ("Index", "Home");
