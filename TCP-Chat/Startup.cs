@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TCP_Chat.Date;
+using TCP_Chat.Hubs;
 
 namespace TCP_Chat {
     public class Startup {
@@ -43,6 +44,8 @@ namespace TCP_Chat {
                 .AddDefaultTokenProviders ();
 
             services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_2_2);
+            services.AddHttpClient ();
+            services.AddSignalR ();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +62,10 @@ namespace TCP_Chat {
             app.UseStaticFiles ();
             app.UseCookiePolicy ();
             app.UseAuthentication ();
+
+            app.UseSignalR (routes => {
+                routes.MapHub<ChatHubs> ("/chatHubs");
+            });
 
             app.UseMvc (routes => {
                 routes.MapRoute (
