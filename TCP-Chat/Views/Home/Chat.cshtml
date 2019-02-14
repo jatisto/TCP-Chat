@@ -25,12 +25,14 @@
                         <div class="input-group">
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <input type="text" id="userInput" class="form-control input-sm" placeholder="Ваш ник."/> @*Имя того кто отправил userInput*@
-
+                                    <!-- <input type="text" id="userInput" class="form-control input-sm" placeholder="Ваш ник."/> @*Имя того кто отправил userInput*@ -->
+                                    <input type="text" class="form-control input-sm" placeholder="Ваш ник." value="@ViewBag.User"/> @*Имя того кто отправил userInput*@
+                                    <!-- <input type="text" id="userInput" class="form-control text-hide" value="@ViewBag.User"/> @*Имя того кто отправил userInput*@ -->
+                                    <select class="form-control hidden" id="userInput"  asp-items="ViewBag.UserId"></select>
                                 </div>
                                 <div class="col-sm-3">
-                                    <input type="text" id="userOutput" class="form-control input-sm" placeholder="Кому."/> @*Имя того кому отправил userOutput*@
-
+                                    <!-- <input type="text" id="userOutput" class="form-control input-sm" placeholder="Кому."/> @*Имя того кому отправил userOutput*@ -->
+                                    <select class="form-control" id="userOutput" asp-items="ViewBag.UserAll"></select>
                                 </div>
                                 <div class="col-sm-6">
                                     <input type="text" id="messageInput" class="form-control input-sm" placeholder="Введите сообщение здесь..."/> @*Само сообщение messageInput*@

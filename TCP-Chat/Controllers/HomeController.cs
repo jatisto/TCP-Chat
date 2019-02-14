@@ -5,19 +5,27 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using TCP_Chat.Date;
 using TCP_Chat.Models;
+using TCP_Chat.ViewModels;
 
 namespace TCP_Chat.Controllers {
     public class HomeController : Controller {
 
         #region Dependency Injection
 
-        private readonly SignInManager<IdentityUser> _signInManager;
-
-        public HomeController (SignInManager<IdentityUser> signInManager) {
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly AppDbContext _context;
+        public HomeController (
+            SignInManager<User> signInManager,
+            UserManager<User> userManager,
+            AppDbContext context) {
             _signInManager = signInManager;
+            _userManager = userManager;
+            _context = context;
         }
-
         #endregion
         public IActionResult Index () {
 
@@ -28,10 +36,19 @@ namespace TCP_Chat.Controllers {
         }
 
         public IActionResult Privacy () {
+
             return View ();
         }
 
         public IActionResult Chat () {
+            var user = _userManager.GetUserName (User);
+            var userId = _userManager.GetUserId (User);
+            if (user != null) {
+                ViewData["User"] = user.ToString ();
+                ViewData["UserId"] = new SelectList (_context.Users.Where (a => a.Id == userId), "Id", "UserName");
+            }
+            ViewData["UserAll"] = new SelectList (_context.Users.Where (a => a.Id != user), "Id", "UserName");
+
             return View ();
         }
 

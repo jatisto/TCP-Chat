@@ -12200,11 +12200,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\home\\Git_work\\TCP-chat\\TCP-Chat\\TCP-Chat.csproj",
+      "projectUniqueName": "c:\\home\\Git_work\\TCP-chat\\tcp-chat\\TCP-Chat\\TCP-Chat.csproj",
       "projectName": "TCP-Chat",
-      "projectPath": "C:\\home\\Git_work\\TCP-chat\\TCP-Chat\\TCP-Chat.csproj",
+      "projectPath": "c:\\home\\Git_work\\TCP-chat\\tcp-chat\\TCP-Chat\\TCP-Chat.csproj",
       "packagesPath": "C:\\Users\\Joni\\.nuget\\packages\\",
-      "outputPath": "C:\\home\\Git_work\\TCP-chat\\TCP-Chat\\obj\\",
+      "outputPath": "c:\\home\\Git_work\\TCP-chat\\tcp-chat\\TCP-Chat\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

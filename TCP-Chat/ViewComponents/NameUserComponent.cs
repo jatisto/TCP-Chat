@@ -5,15 +5,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TCP_Chat.Date;
+using TCP_Chat.Models;
 
 namespace TCP_Chat.ViewComponents {
     public class NameUserComponent : ViewComponent {
         #region Dependency Injection
 
         private readonly AppDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<User> _userManager;
 
-        public NameUserComponent (AppDbContext context, UserManager<IdentityUser> userManager) {
+        public NameUserComponent (AppDbContext context, UserManager<User> userManager) {
             _context = context;
             _userManager = userManager;
         }

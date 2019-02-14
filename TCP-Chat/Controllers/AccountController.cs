@@ -11,13 +11,13 @@ using TCP_Chat.Models;
 using TCP_Chat.ViewModels;
 
 namespace TCP_Chat.Controllers {
-    
+
     public class AccountController : Controller {
 
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public AccountController (UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) {
+        public AccountController (UserManager<User> userManager, SignInManager<User> signInManager) {
             _userManager = userManager;
             _signInManager = signInManager;
         }
@@ -59,7 +59,7 @@ namespace TCP_Chat.Controllers {
         public async Task<IActionResult> Register (LoginVM loginVM) {
 
             if (ModelState.IsValid) {
-                var user = new IdentityUser () { UserName = loginVM.UserName };
+                var user = new User () { UserName = loginVM.UserName };
                 var result = await _userManager.CreateAsync (user, loginVM.Password);
 
                 if (result.Succeeded) {
@@ -70,7 +70,6 @@ namespace TCP_Chat.Controllers {
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Logout () {
             await _signInManager.SignOutAsync ();
             return RedirectToAction ("Index", "Home");

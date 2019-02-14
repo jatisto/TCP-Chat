@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TCP_Chat.Date;
 using TCP_Chat.Hubs;
+using TCP_Chat.Models;
 
 namespace TCP_Chat {
     public class Startup {
@@ -33,7 +34,7 @@ namespace TCP_Chat {
             services.AddDbContext<AppDbContext> (options =>
                 options.UseSqlServer (Configuration.GetConnectionString ("DefaultConnection")));
 
-            services.AddIdentity<IdentityUser, IdentityRole> (options => {
+            services.AddIdentity<User, IdentityRole> (options => {
                     options.Password.RequireDigit = false;
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;
