@@ -70,6 +70,7 @@ namespace TCP_Chat.Controllers {
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Logout () {
             await _signInManager.SignOutAsync ();
             return RedirectToAction ("Index", "Home");

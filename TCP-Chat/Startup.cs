@@ -68,6 +68,10 @@ namespace TCP_Chat {
                 routes.MapHub<ChatHubs> ("/chatHubs");
             });
 
+            app.UseSignalR (routes => {
+                routes.MapHub<MessageHub> ("/messages");
+            });
+
             app.UseMvc (routes => {
                 routes.MapRoute (
                     name: "default",

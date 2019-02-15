@@ -12187,6 +12187,7 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.2": [
       "Microsoft.AspNetCore.App >= 2.2.0",
+      "Microsoft.AspNetCore.Mvc.TagHelpers >= 2.2.0",
       "Microsoft.AspNetCore.Razor.Design >= 2.2.0",
       "Microsoft.AspNetCore.SignalR >= 1.1.0",
       "Microsoft.NETCore.App >= 2.2.0",
@@ -12200,11 +12201,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\home\\Git_work\\TCP-chat\\tcp-chat\\TCP-Chat\\TCP-Chat.csproj",
+      "projectUniqueName": "C:\\home\\Git_work\\TCP-chat\\tcp-chat\\TCP-Chat\\TCP-Chat.csproj",
       "projectName": "TCP-Chat",
-      "projectPath": "c:\\home\\Git_work\\TCP-chat\\tcp-chat\\TCP-Chat\\TCP-Chat.csproj",
+      "projectPath": "C:\\home\\Git_work\\TCP-chat\\tcp-chat\\TCP-Chat\\TCP-Chat.csproj",
       "packagesPath": "C:\\Users\\Joni\\.nuget\\packages\\",
-      "outputPath": "c:\\home\\Git_work\\TCP-chat\\tcp-chat\\TCP-Chat\\obj\\",
+      "outputPath": "C:\\home\\Git_work\\TCP-chat\\tcp-chat\\TCP-Chat\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -12239,6 +12240,10 @@
             "target": "Package",
             "version": "[2.2.0, )",
             "autoReferenced": true
+          },
+          "Microsoft.AspNetCore.Mvc.TagHelpers": {
+            "target": "Package",
+            "version": "[2.2.0, )"
           },
           "Microsoft.AspNetCore.Razor.Design": {
             "suppressParent": "All",

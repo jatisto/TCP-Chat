@@ -17,7 +17,7 @@ connection.start().catch(function (err) {
 });
 
 document.getElementById("sendButton").addEventListener("click", function (event) {
-    var user = document.getElementById("userInput").children[0].value;    
+    var user = document.getElementById("userInput").value;    
     var to = document.getElementById("userOutput").children[0].value;
     var message = document.getElementById("messageInput").value;
     connection.invoke("SendMessage", user, to, message).catch(function (err) {

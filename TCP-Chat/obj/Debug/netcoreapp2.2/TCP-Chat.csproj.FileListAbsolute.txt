@@ -104,3 +104,5 @@ C:\home\Git_work\TCP-chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\TCP-Chat.Vie
 C:\home\Git_work\TCP-chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\TCP-Chat.dll
 C:\home\Git_work\TCP-chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\TCP-Chat.pdb
 C:\home\Git_work\TCP-chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\TCP-Chat.csproj.CopyComplete
+C:\home\Git_work\TCP-chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\Razor\Pages\Index.g.cshtml.cs
+C:\home\Git_work\TCP-chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\Razor\Views\Announcement\Index.g.cshtml.cs

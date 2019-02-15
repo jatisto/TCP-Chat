@@ -44,10 +44,11 @@ namespace TCP_Chat.Controllers {
             var user = _userManager.GetUserName (User);
             var userId = _userManager.GetUserId (User);
             if (user != null) {
+
                 ViewData["User"] = user.ToString ();
-                ViewData["UserId"] = new SelectList (_context.Users.Where (a => a.Id == userId), "Id", "UserName");
+                ViewData["UserId"] = userId.ToString();
             }
-            ViewData["UserAll"] = new SelectList (_context.Users.Where (a => a.Id != user), "Id", "UserName");
+            ViewData["UserAll"] = new SelectList (_context.Users.Where (a => a.Id != userId), "Id", "UserName");
 
             return View ();
         }
