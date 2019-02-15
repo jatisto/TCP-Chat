@@ -10,6 +10,7 @@ namespace TCP_Chat.Date {
 
     public class AppDbContext : IdentityDbContext<User> {
 
+        public DbSet<Connection> Connections { get; set; }
         public AppDbContext (DbContextOptions<AppDbContext> options) : base (options) { }
 
     }
