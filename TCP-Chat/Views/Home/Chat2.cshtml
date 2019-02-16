@@ -2,11 +2,11 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>SignalR Chat</title>
+    <title>Chat</title>
 </head>
 <body>
 <a type="button"  value="Войти в груповой чат" href="~/Home/ChatGroup">ChatGroup</a>
-
+@await Component.InvokeAsync("ListConnectionComponent")
 
     <div id="loginBlock">
         Введите логин:<br />
@@ -53,6 +53,21 @@
             var firstElem = document.getElementById("chatroom").firstChild;
             document.getElementById("chatroom").insertBefore(elem, firstElem);
         });
+
+        hubConnection.on("NotifyDisconnected", function (message) {
+             
+            // создает элемент <p> для сообщения пользователя
+            let elem = document.createElement("p");
+            elem.appendChild(document.createTextNode(message));
+ 
+            var firstElem = document.getElementById("chatroom");
+
+            for (let i = 0; i < firstElem.length; i++) {
+                if (firstElem.options[i].value == message ) {
+                    firstElem.remove(i);
+                }
+            }
+        });
  
         // аутентификация
         document.getElementById("loginBtn").addEventListener("click", function (e) {
@@ -91,5 +106,8 @@
             hubConnection.invoke("Send", message, to);
         });
     </script>
+
+    
+    
 </body>
 </html>

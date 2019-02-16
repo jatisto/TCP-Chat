@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using TCP_Chat.Date;
 using TCP_Chat.Models;
 using TCP_Chat.ViewModels;
@@ -28,7 +29,6 @@ namespace TCP_Chat.Controllers {
         }
         #endregion
         public IActionResult Index () {
-
             if (_signInManager.IsSignedIn (User)) {
                 return RedirectToAction ("Chat2", "Home");
             }
@@ -66,6 +66,17 @@ namespace TCP_Chat.Controllers {
         public IActionResult ChatGroup () {
 
             return View ();
+        }
+
+        [HttpGet]
+        public string ListUsersConnection () {
+
+            List<string> listUserConnected = new List<string> ();
+            var result = _context.Connections.Where (a => a.Connected == true);
+            foreach (var item in result) {
+                listUserConnected.Add (item.Name);
+            }
+            return JsonConvert.SerializeObject (listUserConnected);
         }
 
     }

@@ -26,13 +26,11 @@ namespace TCP_Chat.Controllers {
 
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private IHubContext<MessageHub> _hubContext;
         private readonly AppDbContext _context;
 
-        public AccountController (UserManager<User> userManager, SignInManager<User> signInManager, IHubContext<MessageHub> hubContext, AppDbContext context) {
+        public AccountController (UserManager<User> userManager, SignInManager<User> signInManager, AppDbContext context) {
             _userManager = userManager;
             _signInManager = signInManager;
-            _hubContext = hubContext;
             _context = context;
         }
 
@@ -140,7 +138,6 @@ namespace TCP_Chat.Controllers {
                 username = identity.Name
             };
 
-            // сериализация ответа
             Response.ContentType = "application/json";
             await Response.WriteAsync (JsonConvert.SerializeObject (response, new JsonSerializerSettings { Formatting = Formatting.Indented }));
         }

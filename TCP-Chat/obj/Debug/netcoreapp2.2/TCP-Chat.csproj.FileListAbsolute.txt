@@ -17,8 +17,6 @@ Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\TCP-Chat.Raz
 Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\Razor\Views\Account\Login.g.cshtml.cs
 Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\Razor\Views\Account\Logout.g.cshtml.cs
 Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\Razor\Views\Account\Register.g.cshtml.cs
-Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\Razor\Views\Announcement\Index.g.cshtml.cs
-Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\Razor\Views\Home\Chat.g.cshtml.cs
 Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\Razor\Views\Home\Index.g.cshtml.cs
 Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\Razor\Views\Home\Privacy.g.cshtml.cs
 Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\Razor\Views\Shared\Components\NameUser\Default.g.cshtml.cs
@@ -38,3 +36,4 @@ Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\TCP-Chat.csp
 Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\Razor\Views\Home\Chat2.g.cshtml.cs
 Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\Razor\Views\Home\ChatGroup.g.cshtml.cs
 Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\Razor\Views\HistoryLog\Index.g.cshtml.cs
+Q:\GitFolderHome\TCP-Chat\tcp-chat\TCP-Chat\obj\Debug\netcoreapp2.2\Razor\Views\Shared\Components\ListConnectionComponent\Default.g.cshtml.cs
