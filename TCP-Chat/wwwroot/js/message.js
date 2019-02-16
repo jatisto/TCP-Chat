@@ -1,8 +1,6 @@
 "use strict";
 
-var connection = new signalR.HubConnectionBuilder()
-.withUrl("/messages")
-.build();
+var connection = new signalR.HubConnectionBuilder().withUrl("/messages").build();
 
 connection.on("ReceiveMessage", function(message) {
     var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&lt;");

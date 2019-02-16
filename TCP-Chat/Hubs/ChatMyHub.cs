@@ -12,13 +12,13 @@ namespace TCP_Chat.Hubs {
         private readonly static ConnectionMapping<string> _connections =
             new ConnectionMapping<string> ();
 
-        // public void SendChatMessage (string who, string message) {
-        //     string name = Context.User.Identity.Name;
+        public void SendChatMessage (string who, string message) {
+            string name = Context.User.Identity.Name;
 
-        //     foreach (var connectionId in _connections.GetConnections (who)) {
-        //         Clients.Client (connectionId).addChatMessage (name + ": " + message);
-        //     }
-        // }
+            foreach (var connectionId in _connections.GetConnections (who)) {
+                Clients.Client (connectionId).SendAsync (name + ": " + message);
+            }
+        }
 
         public override Task OnConnectedAsync () {
             string name = Context.User.Identity.Name;

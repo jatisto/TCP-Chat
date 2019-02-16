@@ -30,7 +30,7 @@ namespace TCP_Chat.Controllers {
         public IActionResult Index () {
 
             if (_signInManager.IsSignedIn (User)) {
-                return RedirectToAction ("Chat", "Home");
+                return RedirectToAction ("Chat2", "Home");
             }
             return View ();
         }
@@ -46,7 +46,7 @@ namespace TCP_Chat.Controllers {
             if (user != null) {
 
                 ViewData["User"] = user.ToString ();
-                ViewData["UserId"] = userId.ToString();
+                ViewData["UserId"] = userId.ToString ();
             }
             ViewData["UserAll"] = new SelectList (_context.Users.Where (a => a.Id != userId), "Id", "UserName");
 
@@ -57,5 +57,16 @@ namespace TCP_Chat.Controllers {
         public IActionResult Error () {
             return View (new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult Chat2 () {
+
+            return View ();
+        }
+
+        public IActionResult ChatGroup () {
+
+            return View ();
+        }
+
     }
 }

@@ -32,7 +32,11 @@
                                 </div>
                                 <div class="col-sm-3">
                                     <!-- <input type="text" id="userOutput" class="form-control input-sm" placeholder="Кому."/> @*Имя того кому отправил userOutput*@ -->
-                                    <select class="form-control" id="userOutput" asp-items="ViewBag.UserAll"></select>
+                                    <select class="form-control" id="userOutput" asp-items="ViewBag.UserAll">
+                                        <option value="All">Everyone</option>
+                                        <option value="Myself">Myself</option>
+                                        <option value="PrivateGroup">Private Group</option>
+                                    </select>
                                 </div>
                                 <div class="col-sm-6">
                                     <input type="text" id="messageInput" class="form-control input-sm" placeholder="Введите сообщение здесь..."/> @*Само сообщение messageInput*@
