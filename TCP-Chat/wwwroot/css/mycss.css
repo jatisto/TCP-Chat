@@ -1,0 +1,15 @@
+.center {
+    width: 700px; /* Ширина элемента в пикселах */
+    padding: 10px; /* Поля вокруг текста */
+    margin: auto; /* Выравниваем по центру */
+    /*background: #fc0; /* Цвет фона */
+   }
+
+.btnmy{
+    width: 70px;
+    height: 40px;
+    margin-top: 25px;
+}
+.marginmy{
+    margin-bottom: 15px;
+}

@@ -1,8 +1,8 @@
 ﻿@using TCP_Chat.ViewModels
 @model LoginVM
 
-<div class="row loginForm">
-    <div class="col-md-8 col-md-offset-2">
+<div class="ibox-content m-b-sm border-bottom marginmy">
+    <div class="col-md-8 col-md-offset-2" style="margin-left: 178px;">
         <h2>Зарегестрироваться на TCP-Chat</h2>
         <form asp-controller="Account" asp-action="Register" method="post" class="form-horizontal" role="form">
             <h4>Создайте свой аккаунт.</h4>
@@ -23,7 +23,7 @@
             </div>
             <div class="form-group pull-right formPullRightButton">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" class="btn btn-success " value="Register" />
+                    <input type="submit" class="btn btn-w-m btn-success btnmy" value="Register" />
                 </div>
             </div>
         </form>

@@ -5,22 +5,61 @@
     <title>SignalR Chat</title>
 </head>
 <body>
-    <div id="loginBlock">
-        Ввойти в чат:<br />
-        <input id="userName" type="text" />
-        <input id="loginBtn" type="button" value="Войти" />
-    </div><br />
+
+
+<input type="button" onclick="LoginChat()" class="btn btn-primary block full-width m-b" value="Войти"/>
+
+<div class="modal fade" id="Login">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <div class="row">
+                    <div class="col-md-6 center" style="margin-right: 610px;">
+                       
+                            <form class="m-t" role="form" action="index.html">
+                            <div id="loginBlock" >
+                                <div class="form-group">
+                                    <input id="userName" type="text" placeholder="Введите логин"  class="form-control"/>
+                                </div>
+                            </div>
+                               
+                            </form>
+                      
+                         <input id="loginBtn" type="button" class="btn btn-primary block full-width m-b" value="Войти"/>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+</div>
+
  
+ <div class="ibox-content m-b-sm border-bottom marginmy" style="position: relative" id="inputForm">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="control-label" for="product_name">Сообщение</label>
+                            <input type="text" id="message" placeholder="Введите сообщение" class="form-control"/>
+                        </div>
+                    </div>
+                     <input type="button" id="sendBtn"  value="Отправить"  class="btn btn-w-m btn-success btnmy" style="margin-left: 15px;"/>                
+                </div>                
+                 <div class="chat-message left" id="chatroom"></div>
+            </div>
+
+
     <div id="header"></div><br />
  
-    <div id="inputForm">
-        <input type="text" id="message" />
-        <input type="button" id="sendBtn" value="Отправить" />
-    </div>
-    <div id="chatroom"></div>
+    
  
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
     <script>
+        function LoginChat() {
+        $("#Login").modal();
+        }
+        
         const hubConnection = new signalR.HubConnectionBuilder()
             .withUrl("/chat")
             .build();
@@ -30,10 +69,14 @@
  
             // создаем элемент <b> для имени пользователя
             let userNameElem = document.createElement("b");
+            userNameElem.style.fontSize = "17pt";
+            userNameElem.style.color = "#25262F";
             userNameElem.appendChild(document.createTextNode(userName + ": "));
  
             // создает элемент <p> для сообщения пользователя
             let elem = document.createElement("p");
+            elem.style.fontSize = "17pt";
+            elem.style.color = "#25262F";
             elem.appendChild(userNameElem);
             elem.appendChild(document.createTextNode(message));
  
@@ -45,6 +88,8 @@
         hubConnection.on("Notify", function (message) {
  
             let elem = document.createElement("p");
+            elem.style.fontSize = "17pt";
+            elem.style.color = "#25262F";
             elem.appendChild(document.createTextNode(message));
  
             var firstElem = document.getElementById("chatroom").firstChild;

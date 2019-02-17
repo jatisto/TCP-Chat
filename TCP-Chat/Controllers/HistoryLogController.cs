@@ -24,7 +24,14 @@ namespace TCP_Chat.Controllers {
 
             var userId = _context.Users.FirstOrDefault (u => u.UserName == name);
 
-            if (date != null) {
+            if (name != null && date != null) {
+                DateTimeOffset dtFrom = DateTime.ParseExact (date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                var HisLogName = _context.HistoryLogs
+                    .Include (a => a.UserFrom)
+                    .Include (a => a.UserTo)
+                    .Where (a => a.UserFromId == userId.Id && a.Date.Year == dtFrom.Year && a.Date.Day == dtFrom.Day && a.Date.Month == dtFrom.Month && a.Status == true).ToList ();
+                return View (HisLogName);
+            }else if (date != null) {
                 DateTimeOffset dtFrom = DateTime.ParseExact (date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
                 var HisLogDate = _context.HistoryLogs
@@ -32,9 +39,8 @@ namespace TCP_Chat.Controllers {
                     .Include (a => a.UserTo)
                     .Where (a => a.Date.Year == dtFrom.Year && a.Date.Day == dtFrom.Day && a.Date.Month == dtFrom.Month && a.Status == true).ToList ();
                 return View (HisLogDate);
-            }
-
-            if (name != null) {
+                
+            }else if (name != null) {
                 var HisLogName = _context.HistoryLogs
                     .Include (a => a.UserFrom)
                     .Include (a => a.UserTo)

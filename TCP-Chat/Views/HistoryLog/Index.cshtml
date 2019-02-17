@@ -5,65 +5,62 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Log</h2>
-
 <form method="post" asp-action="Index">
 
     <div class="form-group" id="dateActionFrom">                
-        <label class="control-label">Дата</label>
+        <label class="control-label"><h4 style="color: white">Введите дату поиска:</h4></label>
         <input 
         id="dateActionFromAsset" 
         type="date" 
         class="form-control" 
         name="date"
+        placeholder="Введите дату поиска в формате ДД.ММ.ГГГГ"
         />
     </div>
-    <input type="submit" value="Send">
-
-    <div class="form-group" id="dateActionFrom">                
-        <label class="control-label">Имя</label>
+    
+    <div class="form-group" id="dateActionFrom">   
         <input 
         id="dateActionFromAsset" 
         type="text" 
         class="form-control" 
         name="name"
+        placeholder="Введите имя пользователя для поиска"
         />
     </div>
-    <input type="submit" value="Send">
+    <input type="submit" class="btn btn-primary block full-width m-b" value="Send">
 </form>
 
-<table class="table tablemy">
+<table class="table table-striped table-bordered table-hover dataTables-example" style="background-color: white">
     <thead class="caption">
-        <tr class="trmy">
-            <th class="thmy">
+        <tr class="gradeX">
+            <th>
                Отправитель
             </th>
-            <th class="thmy">
+            <th>
                Получатель
             </th>
-            <th class="thmy">
+            <th>
                Сообщение
             </th>
-            <th class="thmy">
+            <th>
                Дата
             </th>
-            <th class="thmy"></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
         <tr>
-            <td class="tdmy">
+            <td>
                 @Html.DisplayFor(modelItem => item.UserFrom.UserName)
             </td>
-            <td class="tdmy">
+            <td >
                 @Html.DisplayFor(modelItem => item.UserTo.UserName)
             </td>
-            <td class="tdmy">
+            <td>
                 @Html.DisplayFor(modelItem => item.Context)
             </td>
-            <td class="tdmy">
+            <td>
                 @Html.DisplayFor(modelItem => item.Date)
             </td>
         </tr>

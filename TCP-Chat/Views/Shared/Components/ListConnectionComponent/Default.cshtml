@@ -1,24 +1,10 @@
 @model IEnumerable<TCP_Chat.Models.Connection>
 
-<table class="table table-hover table-bordered">
-    <thead>
-    <tr style="background-color: whitesmoke">
-        <th class="text-center">
-            <a asp-action="Index" style="text-decoration: none;" asp-route-sorting="@ViewBag.NameSort">
-               Имя
-            </a>
-        </th>
-    </tr>
-    </thead>
-    <tbody>
+
     @foreach (var item in Model)
     {
-        <tr >
-            <td class="text-center col-sm-4">
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-        </tr>
-
+       
+                <h4> Сейчас онлайн: @Html.DisplayFor(modelItem => item.Name) </h4>
+       
     }
-    </tbody>
-</table>   
+ 
