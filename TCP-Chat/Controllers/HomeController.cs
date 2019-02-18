@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,6 +13,7 @@ using TCP_Chat.Models;
 using TCP_Chat.ViewModels;
 
 namespace TCP_Chat.Controllers {
+
     public class HomeController : Controller {
 
         #region Dependency Injection
@@ -42,12 +44,14 @@ namespace TCP_Chat.Controllers {
             return View (new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        [Authorize]
         //Метод который возвращает View чата
         public IActionResult Chat2 () {
 
             return View ();
         }
 
+        [Authorize]
         //Метод который возвращает View групового чата
         public IActionResult ChatGroup () {
 

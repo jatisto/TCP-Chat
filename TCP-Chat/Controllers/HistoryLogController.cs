@@ -1,6 +1,8 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -10,6 +12,7 @@ using TCP_Chat.Models;
 using TCP_Chat.ViewModels;
 
 namespace TCP_Chat.Controllers {
+    [Authorize]
     public class HistoryLogController : Controller {
 
         private readonly UserManager<User> _userManager;
@@ -21,85 +24,102 @@ namespace TCP_Chat.Controllers {
             _signInManager = signInManager;
             _context = context;
         }
-        public IActionResult Index (string date, string name, int page = 1) {
+        public async Task<IActionResult> Index (string date, string namefrom, string nameto, int? history, int page = 1, SortState sortOrder = SortState.NameAsc) {
 
-
-            int pageSize = 15;
-            var userId = _context.Users.FirstOrDefault (u => u.UserName == name);
-
-            //Log Поиск если заданы  и имя и дата
-
-            if (name != null && date != null) {
-                DateTimeOffset dtFrom = DateTime.ParseExact (date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-
-                IQueryable<HistoryLog> sourceNameData = _context.HistoryLogs.Where (a => a.UserFromId == userId.Id && a.Date.Year == dtFrom.Year && a.Date.Day == dtFrom.Day && a.Date.Month == dtFrom.Month && a.Status == true || a.Status == false)
-                    .Include (x => x.UserFrom)
-                    .Include (x => x.UserTo);
-                var countNameData = sourceNameData.Count ();
-                var itemsNameData = sourceNameData.Skip ((page - 1) * pageSize).Take (pageSize).ToList ();
-
-                PageViewModel pageViewModelNameData = new PageViewModel (countNameData, page, pageSize);
-                HistoryLogVM viewModelNameData = new HistoryLogVM {
-                    PageViewModel = pageViewModelNameData,
-                    HistoryLogs = itemsNameData
-                };
-
-                return View (viewModelNameData);
-
-            } else if (date != null) {
-                DateTimeOffset dtFrom = DateTime.ParseExact (date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-
-                IQueryable<HistoryLog> sourceData = _context.HistoryLogs
-                    .Where (a => a.Date.Year == dtFrom.Year && a.Date.Day == dtFrom.Day && a.Date.Month == dtFrom.Month && a.Status == true || a.Status == false)
-                    .Include (x => x.UserFrom)
-                    .Include (x => x.UserTo);
-                var countData = sourceData.Count ();
-                var itemsData = sourceData.Skip ((page - 1) * pageSize).Take (pageSize).ToList ();
-
-                PageViewModel pageViewModelData = new PageViewModel (countData, page, pageSize);
-                HistoryLogVM viewModelData = new HistoryLogVM {
-                    PageViewModel = pageViewModelData,
-                    HistoryLogs = itemsData
-                };
-                return View (viewModelData);
-
-            } else if (name != null) {
-                IQueryable<HistoryLog> sourceName = _context.HistoryLogs
-                    .Where (a => a.UserFromId == userId.Id && a.Status == true || a.Status == false)
-                    .Include (x => x.UserFrom)
-                    .Include (x => x.UserTo);
-                var countName = sourceName.Count ();
-                var itemsName = sourceName.Skip ((page - 1) * pageSize).Take (pageSize).ToList ();
-
-                PageViewModel pageViewModelName = new PageViewModel (countName, page, pageSize);
-                HistoryLogVM viewModelName = new HistoryLogVM {
-                    PageViewModel = pageViewModelName,
-                    HistoryLogs = itemsName
-                };
-
-                return View (viewModelName);
-            }
-
+            int pageSize = 13;
+            var userIdFrom = _context.Users.FirstOrDefault (u => u.UserName == namefrom);
+            var userIdTo = _context.Users.FirstOrDefault (u => u.UserName == nameto);
             IQueryable<HistoryLog> source = _context.HistoryLogs.Where (a => a.Status == true || a.Status == false)
                 .Include (x => x.UserFrom)
                 .Include (x => x.UserTo);
-            var count = source.Count ();
-            var items = source.Skip ((page - 1) * pageSize).Take (pageSize).ToList ();
 
-            PageViewModel pageViewModel = new PageViewModel (count, page, pageSize);
-            HistoryLogVM viewModel = new HistoryLogVM {
-                PageViewModel = pageViewModel,
-                HistoryLogs = items
+            if (userIdFrom != null || userIdTo != null) { //Log Поиск если заданы  и имя и дата
+
+                if (namefrom != null && date != null) {
+                    DateTimeOffset dtFrom = DateTime.ParseExact (date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+                    source = source.Where (a => a.UserFromId == userIdFrom.Id && a.Date.Year == dtFrom.Year && a.Date.Day == dtFrom.Day && a.Date.Month == dtFrom.Month && a.Status == true || a.Status == false);
+
+                } else if (!String.IsNullOrEmpty (date)) {
+                    DateTimeOffset dtFrom = DateTime.ParseExact (date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+                    source = source.Where (a => a.Date.Year == dtFrom.Year && a.Date.Day == dtFrom.Day && a.Date.Month == dtFrom.Month && a.Status == true || a.Status == false);
+
+                } else if (!String.IsNullOrEmpty (namefrom)) {
+
+                    source = source.Where (a => a.UserFromId == userIdFrom.Id && a.Status == true || a.Status == false);
+                } else if (!String.IsNullOrEmpty (nameto)) {
+
+                    source = source.Where (a => a.UserToId == userIdTo.Id && a.Status == true || a.Status == false);
+                } else if (nameto != null && date != null) {
+
+                    DateTimeOffset dtFrom = DateTime.ParseExact (date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+                    source = source.Where (a => a.UserToId == userIdTo.Id && a.Date.Year == dtFrom.Year && a.Date.Day == dtFrom.Day && a.Date.Month == dtFrom.Month && a.Status == true || a.Status == false);
+                } else
+                    source = source.Where (a => a.Status == true || a.Status == false);
+
+                // сортировка
+                switch (sortOrder) {
+                    case SortState.NameDesc:
+                        source = source.OrderByDescending (s => s.UserFromId);
+                        break;
+                    case SortState.DateAsc:
+                        source = source.OrderBy (s => s.Date.Date);
+                        break;
+                    case SortState.DateDesc:
+                        source = source.OrderByDescending (s => s.Status);
+                        break;
+                    default:
+                        source = source.OrderBy (s => s.UserFromId);
+                        break;
+                }
+
+                // пагинация
+                var count = await source.CountAsync ();
+                var items = await source.Skip ((page - 1) * pageSize).Take (pageSize).ToListAsync ();
+
+                PageViewModel pageViewModel = new PageViewModel (count, page, pageSize);
+                HistoryLogVM viewModel = new HistoryLogVM {
+                    PageViewModel = pageViewModel,
+                    SortViewModel = new SortViewModel (sortOrder),
+                    FilterViewModel = new FilterViewModel (_context.HistoryLogs.ToList (), date, namefrom, nameto),
+                    HistoryLogs = items
+                };
+
+            }
+
+            // сортировка
+            switch (sortOrder) {
+                case SortState.NameDesc:
+                    source = source.OrderByDescending (s => s.UserFromId);
+                    break;
+                case SortState.DateAsc:
+                    source = source.OrderBy (s => s.Date.Date);
+                    break;
+                case SortState.DateDesc:
+                    source = source.OrderByDescending (s => s.Status);
+                    break;
+                default:
+                    source = source.OrderBy (s => s.UserFromId);
+                    break;
+            }
+
+            source = source.Where (a => a.Status == true || a.Status == false);
+
+            var countAll = await source.CountAsync ();
+            var itemsAll = await source.Skip ((page - 1) * pageSize).Take (pageSize).ToListAsync ();
+
+            PageViewModel pageViewModelAll = new PageViewModel (countAll, page, pageSize);
+            HistoryLogVM viewModelAll = new HistoryLogVM {
+                PageViewModel = pageViewModelAll,
+                SortViewModel = new SortViewModel (sortOrder),
+                FilterViewModel = new FilterViewModel (_context.HistoryLogs.ToList (), date, namefrom, nameto),
+                HistoryLogs = itemsAll
             };
 
-            var HisLog = _context.HistoryLogs
-                .Include (a => a.UserFrom)
-                .Include (a => a.UserTo)
-                .Where (a => a.Status == true || a.Status == false).ToList ();
+            return View (viewModelAll);
 
-            return View (viewModel);
         }
-
-
     }
 }

@@ -12,7 +12,10 @@ namespace TCP_Chat.Date {
 
         public DbSet<Connection> Connections { get; set; }
         public DbSet<HistoryLog> HistoryLogs { get; set; }
-        public AppDbContext (DbContextOptions<AppDbContext> options) : base (options) { }
+        public AppDbContext (DbContextOptions<AppDbContext> options) 
+        : base (options) {
+            Database.EnsureCreated ();
+        }
 
     }
 
