@@ -1,14 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Win32;
+using Newtonsoft.Json;
+using TCP_Chat.Date;
+using TCP_Chat.Hubs;
 using TCP_Chat.Models;
 using TCP_Chat.ViewModels;
+using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
 
 namespace TCP_Chat.Controllers {
 
@@ -16,10 +26,12 @@ namespace TCP_Chat.Controllers {
 
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly AppDbContext _context;
 
-        public AccountController (UserManager<User> userManager, SignInManager<User> signInManager) {
+        public AccountController (UserManager<User> userManager, SignInManager<User> signInManager, AppDbContext context) {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         [AllowAnonymous]
@@ -56,16 +68,24 @@ namespace TCP_Chat.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register (LoginVM loginVM) {
+        public async Task<IActionResult> Register (LoginVM loginVM, string role) {
 
             if (ModelState.IsValid) {
                 var user = new User () { UserName = loginVM.UserName };
                 var result = await _userManager.CreateAsync (user, loginVM.Password);
 
                 if (result.Succeeded) {
+
+                    if (role == null) {
+                        role = "User";
+                    }
+
+                    await _userManager.AddToRoleAsync (user, role.ToUpper ());
+
                     return RedirectToAction ("Index", "Home");
                 }
             }
+
             return View (loginVM);
         }
 
@@ -76,9 +96,12 @@ namespace TCP_Chat.Controllers {
             return RedirectToAction ("Index", "Home");
         }
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
         // Метод для создания ролей
+=======
+>>>>>>> 59c5848c2330f9d17a9f1967b6240dcad750a20c
         public async Task<IActionResult> CreateRole (string role, string id) {
             var user = await _userManager.FindByIdAsync (id);
 
@@ -92,7 +115,11 @@ namespace TCP_Chat.Controllers {
             await _context.SaveChangesAsync ();
             return RedirectToAction ("Index", "Home");
         }
+<<<<<<< HEAD
         // Метод для создания Токена
+=======
+
+>>>>>>> 59c5848c2330f9d17a9f1967b6240dcad750a20c
         [HttpPost ("/token")]
         public async Task Token () {
             var username = Request.Form["username"];
@@ -125,7 +152,10 @@ namespace TCP_Chat.Controllers {
             await Response.WriteAsync (JsonConvert.SerializeObject (response, new JsonSerializerSettings { Formatting = Formatting.Indented }));
         }
 
+<<<<<<< HEAD
         // Метод для проверки пользьзователя для входа в личный чат
+=======
+>>>>>>> 59c5848c2330f9d17a9f1967b6240dcad750a20c
         private ClaimsIdentity GetIdentity (LoginVM loginVM, string username, string password) {
 
             User user = _context.Users.FirstOrDefault (x => x.UserName == username);
@@ -142,6 +172,10 @@ namespace TCP_Chat.Controllers {
             }
             return null;
         }
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+
+>>>>>>> 59c5848c2330f9d17a9f1967b6240dcad750a20c
     }
 }

@@ -17,7 +17,10 @@ namespace TCP_Chat.Hubs {
     [Authorize]
     public class ChatHub : Hub {
 
+<<<<<<< HEAD
         //Подключает клас ConnectionMapping для добавления и удаления пользователей в сети
+=======
+>>>>>>> 59c5848c2330f9d17a9f1967b6240dcad750a20c
         private readonly static ConnectionMapping<string> _connections =
             new ConnectionMapping<string> ();
         private readonly SignInManager<User> _signInManager;
@@ -33,7 +36,10 @@ namespace TCP_Chat.Hubs {
             _context = context;
         }
 
+<<<<<<< HEAD
         //Отправка сообщений
+=======
+>>>>>>> 59c5848c2330f9d17a9f1967b6240dcad750a20c
         public async Task Send (string message, string to) {
             var userName = Context.User.Identity.Name;
             var userId = _context.Users.FirstOrDefault (u => u.UserName == userName);
@@ -43,7 +49,10 @@ namespace TCP_Chat.Hubs {
                 await Clients.User (Context.UserIdentifier).SendAsync ("Receive", message, userName);
             await Clients.User (to).SendAsync ("Receive", message, userName);
 
+<<<<<<< HEAD
             // Запись сообщений в Log
+=======
+>>>>>>> 59c5848c2330f9d17a9f1967b6240dcad750a20c
             HistoryLog hLog = new HistoryLog () {
                 Context = message,
                 UserFromId = userId.Id,
@@ -55,7 +64,10 @@ namespace TCP_Chat.Hubs {
             await _context.SaveChangesAsync ();
         }
 
+<<<<<<< HEAD
         //Пользователи которые подключены
+=======
+>>>>>>> 59c5848c2330f9d17a9f1967b6240dcad750a20c
         public override async Task OnConnectedAsync () {
             string name = Context.User.Identity.Name;
             await Clients.All.SendAsync ("Notify", $"Приветствуем {Context.UserIdentifier}");
@@ -63,7 +75,11 @@ namespace TCP_Chat.Hubs {
             if (name == null) {
                 await base.OnConnectedAsync ();
             }
+<<<<<<< HEAD
             //Поиск User-а
+=======
+
+>>>>>>> 59c5848c2330f9d17a9f1967b6240dcad750a20c
             var user = _context.Users
                 .Include (u => u.Connections)
                 .SingleOrDefault (u => u.UserName == name);
@@ -76,7 +92,10 @@ namespace TCP_Chat.Hubs {
 
                 _context.Add (user);
             } else {
+<<<<<<< HEAD
                 //Добовляем пользователя который подключилья, в базу и на карту подключений
+=======
+>>>>>>> 59c5848c2330f9d17a9f1967b6240dcad750a20c
                 user.Connections.Add (new Connection {
                     ConnectionID = Context.ConnectionId,
                         LastActivity = DateTimeOffset.UtcNow,
@@ -90,11 +109,17 @@ namespace TCP_Chat.Hubs {
             await base.OnConnectedAsync ();
         }
 
+<<<<<<< HEAD
         //Пользователи которые отключлись
         public override async Task OnDisconnectedAsync (Exception ex) {
             await Clients.All.SendAsync ("NotifyDisconnected", $"Пока {Context.UserIdentifier}");
 
             //Находим пользователя и меняем ему статус на false и обновляем подключение и удаляем с карты подключений
+=======
+        public override async Task OnDisconnectedAsync (Exception ex) {
+            await Clients.All.SendAsync ("NotifyDisconnected", $"Пока {Context.UserIdentifier}");
+
+>>>>>>> 59c5848c2330f9d17a9f1967b6240dcad750a20c
             var connection = _context.Connections.Find (Context.ConnectionId);
             connection.Connected = false;
             _context.Update (connection);
@@ -103,8 +128,12 @@ namespace TCP_Chat.Hubs {
             await base.OnDisconnectedAsync (ex);
         }
 
+<<<<<<< HEAD
         //Устанавливаем имя пользователя
         string groupname = "TCP-Chat";
+=======
+        string groupname = "cats";
+>>>>>>> 59c5848c2330f9d17a9f1967b6240dcad750a20c
         public async Task Enter (string username) {
 
             if (String.IsNullOrEmpty (username)) {
@@ -114,6 +143,7 @@ namespace TCP_Chat.Hubs {
                 await Clients.Group (groupname).SendAsync ("Notify", $"{username} вошел в чат");
             }
         }
+<<<<<<< HEAD
         //Отправка сообщений группе
         public async Task SendGroup (string message, string username) {
             await Clients.Group (groupname).SendAsync ("Receive", message, username);
@@ -127,6 +157,10 @@ namespace TCP_Chat.Hubs {
             };
             _context.Add (hLog);
             await _context.SaveChangesAsync ();
+=======
+        public async Task SendGroup (string message, string username) {
+            await Clients.Group (groupname).SendAsync ("Receive", message, username);
+>>>>>>> 59c5848c2330f9d17a9f1967b6240dcad750a20c
         }
 
     }

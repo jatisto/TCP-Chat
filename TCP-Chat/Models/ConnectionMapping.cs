@@ -12,7 +12,7 @@ namespace TCP_Chat.Models {
             }
         }
 
-        public void Add (T key, string connectionId) {
+        public void Add (T key, string connectionId) {            
             lock (_connections) {
                 HashSet<string> connections;
                 if (!_connections.TryGetValue (key, out connections)) {
@@ -51,5 +51,6 @@ namespace TCP_Chat.Models {
                 }
             }
         }
+        
     }
 }

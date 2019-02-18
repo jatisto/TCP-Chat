@@ -5,25 +5,44 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<<<<<<< HEAD
 <form method="post" asp-action="Index">
 
     <div class="form-group" id="dateActionFrom">                
         <label class="control-label"><h4 style="color: white">Введите дату поиска:</h4></label>
+=======
+<h2>Log</h2>
+
+<form method="post" asp-action="Index">
+
+    <div class="form-group" id="dateActionFrom">                
+        <label class="control-label">Дата</label>
+>>>>>>> 59c5848c2330f9d17a9f1967b6240dcad750a20c
         <input 
         id="dateActionFromAsset" 
         type="date" 
         class="form-control" 
         name="date"
+<<<<<<< HEAD
         placeholder="Введите дату поиска в формате ДД.ММ.ГГГГ"
         />
     </div>
     
     <div class="form-group" id="dateActionFrom">   
+=======
+        />
+    </div>
+    <input type="submit" value="Send">
+
+    <div class="form-group" id="dateActionFrom">                
+        <label class="control-label">Имя</label>
+>>>>>>> 59c5848c2330f9d17a9f1967b6240dcad750a20c
         <input 
         id="dateActionFromAsset" 
         type="text" 
         class="form-control" 
         name="name"
+<<<<<<< HEAD
         placeholder="Введите имя пользователя для поиска"
         />
     </div>
@@ -51,12 +70,36 @@
             <th>
                Дата
             </th>
+=======
+        />
+    </div>
+    <input type="submit" value="Send">
+</form>
+
+<table class="table tablemy">
+    <thead class="caption">
+        <tr class="trmy">
+            <th class="thmy">
+               Отправитель
+            </th>
+            <th class="thmy">
+               Получатель
+            </th>
+            <th class="thmy">
+               Сообщение
+            </th>
+            <th class="thmy">
+               Дата
+            </th>
+            <th class="thmy"></th>
+>>>>>>> 59c5848c2330f9d17a9f1967b6240dcad750a20c
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
         <tr>
+<<<<<<< HEAD
             <td>
                 @Html.DisplayFor(modelItem => item.UserFrom.UserName)
             </td>
@@ -67,12 +110,25 @@
                 @Html.DisplayFor(modelItem => item.Context)
             </td>
             <td>
+=======
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.UserFrom.UserName)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.UserTo.UserName)
+            </td>
+            <td class="tdmy">
+                @Html.DisplayFor(modelItem => item.Context)
+            </td>
+            <td class="tdmy">
+>>>>>>> 59c5848c2330f9d17a9f1967b6240dcad750a20c
                 @Html.DisplayFor(modelItem => item.Date)
             </td>
         </tr>
         }
     </tbody>
 </table>
+<<<<<<< HEAD
 
 
 <script>
@@ -99,3 +155,5 @@
     }
 
 </script>
+=======
+>>>>>>> 59c5848c2330f9d17a9f1967b6240dcad750a20c

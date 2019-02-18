@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using TCP_Chat.Date;
 using TCP_Chat.Hubs;
 using TCP_Chat.Models;
@@ -44,6 +47,35 @@ namespace TCP_Chat {
                 .AddEntityFrameworkStores<AppDbContext> ()
                 .AddDefaultTokenProviders ();
 
+            services.AddAuthentication (JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer (options => {
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters {
+                        ValidateIssuer = true,
+                        ValidIssuer = AuthOptions.ISSUER,
+                        ValidateAudience = true,
+                        ValidAudience = AuthOptions.AUDIENCE,
+                        ValidateLifetime = true,
+                        IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey (),
+                        ValidateIssuerSigningKey = true,
+                    };
+                    options.Events = new JwtBearerEvents {
+                        OnMessageReceived = context => {
+                            var accessToken = context.Request.Query["access_token"];
+
+                            // если запрос направлен хабу
+                            var path = context.HttpContext.Request.Path;
+                            if (!string.IsNullOrEmpty (accessToken) &&
+                                (path.StartsWithSegments ("/chat"))) {
+                                // получаем токен из строки запроса
+                                context.Token = accessToken;
+                            }
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
+
+            services.AddSingleton<IUserIdProvider, CustomUserIdProvider> ();
             services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_2_2);
             services.AddHttpClient ();
             services.AddSignalR ();
@@ -64,13 +96,17 @@ namespace TCP_Chat {
             app.UseCookiePolicy ();
             app.UseAuthentication ();
 
-            app.UseSignalR (routes => {
-                routes.MapHub<ChatHubs> ("/chatHubs");
-            });
+            // app.UseSignalR (routes => {
+            //     routes.MapHub<ChatHubs> ("/chatHubs");
+            // });
 
             app.UseSignalR (routes => {
-                routes.MapHub<MessageHub> ("/messages");
+                routes.MapHub<ChatHub> ("/chat");
             });
+
+            // app.UseSignalR (routes => {
+            //     routes.MapHub<MessageHub> ("/messages");
+            // });
 
             app.UseMvc (routes => {
                 routes.MapRoute (

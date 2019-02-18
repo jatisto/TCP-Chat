@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TCP_Chat.Date;
 
 namespace TCP_Chat.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190216081149_AddConnection")]
+    partial class AddConnection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -138,8 +140,6 @@ namespace TCP_Chat.Migrations
 
                     b.Property<DateTimeOffset>("LastActivity");
 
-                    b.Property<string>("Name");
-
                     b.Property<string>("UserAgent");
 
                     b.Property<string>("UserId");
@@ -149,30 +149,6 @@ namespace TCP_Chat.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Connections");
-                });
-
-            modelBuilder.Entity("TCP_Chat.Models.HistoryLog", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Context");
-
-                    b.Property<DateTimeOffset>("Date");
-
-                    b.Property<bool>("Status");
-
-                    b.Property<string>("UserFromId");
-
-                    b.Property<string>("UserToId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserFromId");
-
-                    b.HasIndex("UserToId");
-
-                    b.ToTable("HistoryLogs");
                 });
 
             modelBuilder.Entity("TCP_Chat.Models.User", b =>
@@ -276,17 +252,6 @@ namespace TCP_Chat.Migrations
                     b.HasOne("TCP_Chat.Models.User")
                         .WithMany("Connections")
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("TCP_Chat.Models.HistoryLog", b =>
-                {
-                    b.HasOne("TCP_Chat.Models.User", "UserFrom")
-                        .WithMany()
-                        .HasForeignKey("UserFromId");
-
-                    b.HasOne("TCP_Chat.Models.User", "UserTo")
-                        .WithMany()
-                        .HasForeignKey("UserToId");
                 });
 #pragma warning restore 612, 618
         }
