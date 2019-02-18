@@ -41,8 +41,10 @@ namespace TCP_Chat.Controllers {
             });
         }
 
+        // Метод для проверки Логина пользователя
         [HttpPost]
         public async Task<IActionResult> Login (LoginVM loginVM) {
+
             if (!ModelState.IsValid) {
                 return View (loginVM);
             }
@@ -53,6 +55,7 @@ namespace TCP_Chat.Controllers {
                 var result = await _signInManager.PasswordSignInAsync (user, loginVM.Password, false, false);
 
                 if (result.Succeeded) {
+                    TokenUser(loginVM, loginVM.UserName, loginVM.Password);
                     if (string.IsNullOrEmpty (loginVM.ReturnUrl))
                         return RedirectToAction ("Index", "Home");
                     return Redirect (loginVM.ReturnUrl);
@@ -62,6 +65,7 @@ namespace TCP_Chat.Controllers {
             return View (loginVM);
         }
 
+        // Метод для Регистрации пользователя
         public IActionResult Register () {
             return View ();
         }
@@ -89,6 +93,7 @@ namespace TCP_Chat.Controllers {
             return View (loginVM);
         }
 
+        // Метод для Выхода пользователя 
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Logout () {
@@ -96,6 +101,7 @@ namespace TCP_Chat.Controllers {
             return RedirectToAction ("Index", "Home");
         }
 
+        // Метод для создания ролей
         public async Task<IActionResult> CreateRole (string role, string id) {
             var user = await _userManager.FindByIdAsync (id);
 
@@ -109,7 +115,7 @@ namespace TCP_Chat.Controllers {
             await _context.SaveChangesAsync ();
             return RedirectToAction ("Index", "Home");
         }
-
+        // Метод для создания Токена
         [HttpPost ("/token")]
         public async Task Token () {
             var username = Request.Form["username"];
@@ -142,6 +148,7 @@ namespace TCP_Chat.Controllers {
             await Response.WriteAsync (JsonConvert.SerializeObject (response, new JsonSerializerSettings { Formatting = Formatting.Indented }));
         }
 
+        // Метод для проверки пользьзователя для входа в личный чат
         private ClaimsIdentity GetIdentity (LoginVM loginVM, string username, string password) {
 
             User user = _context.Users.FirstOrDefault (x => x.UserName == username);
@@ -150,6 +157,23 @@ namespace TCP_Chat.Controllers {
 
                 var claims = new List<Claim> {
                 new Claim (ClaimsIdentity.DefaultNameClaimType, user.UserName),
+                };
+                ClaimsIdentity claimsIdentity =
+                    new ClaimsIdentity (claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+                        ClaimsIdentity.DefaultRoleClaimType);
+                return claimsIdentity;
+            }
+            return null;
+        }
+
+        public ClaimsIdentity TokenUser (LoginVM loginVM, string user, string password) {
+
+            User userLogin = _context.Users.FirstOrDefault (x => x.UserName == user);
+
+            if (_userManager.PasswordHasher.VerifyHashedPassword (userLogin, userLogin.PasswordHash, password) != PasswordVerificationResult.Failed) {
+
+                var claims = new List<Claim> {
+                new Claim (ClaimsIdentity.DefaultNameClaimType, userLogin.UserName),
                 };
                 ClaimsIdentity claimsIdentity =
                     new ClaimsIdentity (claims, "Token", ClaimsIdentity.DefaultNameClaimType,

@@ -3,15 +3,18 @@ using System.Linq;
 
 namespace TCP_Chat.Models {
     public class ConnectionMapping<T> {
+        //Словарь для подключений
         private readonly Dictionary<T, HashSet<string>> _connections =
         new Dictionary<T, HashSet<string>> ();
 
+        //Счётчик
         public int Count {
             get {
                 return _connections.Count;
             }
         }
 
+        //Добавление подключения
         public void Add (T key, string connectionId) {            
             lock (_connections) {
                 HashSet<string> connections;
@@ -26,6 +29,7 @@ namespace TCP_Chat.Models {
             }
         }
 
+        //Получаем соеденение 
         public IEnumerable<string> GetConnections (T key) {
             HashSet<string> connections;
             if (_connections.TryGetValue (key, out connections)) {
@@ -35,6 +39,7 @@ namespace TCP_Chat.Models {
             return Enumerable.Empty<string> ();
         }
 
+        //Удаляем подключение
         public void Remove (T key, string connectionId) {
             lock (_connections) {
                 HashSet<string> connections;

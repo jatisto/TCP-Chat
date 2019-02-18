@@ -20,9 +20,12 @@ namespace TCP_Chat.Controllers {
             _signInManager = signInManager;
             _context = context;
         }
+
         public IActionResult Index (string date, string name) {
 
             var userId = _context.Users.FirstOrDefault (u => u.UserName == name);
+
+            //Log Поиск если заданы  и имя и дата
 
             if (name != null && date != null) {
                 DateTimeOffset dtFrom = DateTime.ParseExact (date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
@@ -31,7 +34,7 @@ namespace TCP_Chat.Controllers {
                     .Include (a => a.UserTo)
                     .Where (a => a.UserFromId == userId.Id && a.Date.Year == dtFrom.Year && a.Date.Day == dtFrom.Day && a.Date.Month == dtFrom.Month && a.Status == true).ToList ();
                 return View (HisLogName);
-            }else if (date != null) {
+            } else if (date != null) { //Log Поиск если задано только имя
                 DateTimeOffset dtFrom = DateTime.ParseExact (date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
                 var HisLogDate = _context.HistoryLogs
@@ -39,8 +42,8 @@ namespace TCP_Chat.Controllers {
                     .Include (a => a.UserTo)
                     .Where (a => a.Date.Year == dtFrom.Year && a.Date.Day == dtFrom.Day && a.Date.Month == dtFrom.Month && a.Status == true).ToList ();
                 return View (HisLogDate);
-                
-            }else if (name != null) {
+
+            } else if (name != null) { //Log Поиск если задано только дата
                 var HisLogName = _context.HistoryLogs
                     .Include (a => a.UserFrom)
                     .Include (a => a.UserTo)
@@ -48,25 +51,14 @@ namespace TCP_Chat.Controllers {
                 return View (HisLogName);
             }
 
+            //Log Вывод сообщений от всех пользователей
+
             var HisLog = _context.HistoryLogs
                 .Include (a => a.UserFrom)
                 .Include (a => a.UserTo)
                 .Where (a => a.Status == true).ToList ();
 
             return View (HisLog);
-        }
-
-        [HttpPost]
-        public IActionResult FilterOnDate (string date) {
-
-            DateTimeOffset dtFrom = DateTime.ParseExact (date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-
-            var assetsNew = _context.HistoryLogs
-                .Include (a => a.UserFrom)
-                .Include (a => a.UserTo)
-                .Where (a => a.Date.Year == dtFrom.Year && a.Date.Day == dtFrom.Day && a.Date.Month == dtFrom.Month && a.Status == true);
-
-            return View (assetsNew.ToList ());
         }
     }
 }
