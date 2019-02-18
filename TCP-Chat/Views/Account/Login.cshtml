@@ -11,7 +11,7 @@
             <div class="form-group">
                 <label asp-for="UserName" class="col-md-2 control-label"></label>
                 <div class="col-md-12">
-                    <input asp-for="UserName" class="form-control" />
+                    <input asp-for="UserName" id="userName" class="form-control" />
                     <span asp-validation-for="UserName" class="text-danger"></span>
                 </div>
             </div>
@@ -19,17 +19,57 @@
             <div class="form-group">
                 <label asp-for="Password" class="col-md-2 control-label"></label>
                 <div class="col-md-12">
-                    <input asp-for="Password" class="form-control" />
+                    <input asp-for="Password" id="userPassword" class="form-control" />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="form-group pull-right formPullRightButton">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" class="btn btn-w-m btn-success btnmy" value="Log in" />
+                    <input type="submit" id="loginBtn" class="btn btn-w-m btn-success btnmy" value="Log in" />
                 </div>
             </div>
         </form>
     </div>
 </div>
+
+
+ <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script>
+        let token;
+        const hubConnection = new signalR.HubConnectionBuilder()
+            .withUrl("/chat", { accessTokenFactory: () => token})
+            .build();
+        
+        // аутентификация
+        document.getElementById("loginBtn").addEventListener("click", function (e) {           
+            var request = new XMLHttpRequest();
+            request.open("POST", "/token", true);
+            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.addEventListener("load", function () {
+                if (request.status < 400) { // если запрос успешный
+ 
+                    let data = JSON.parse(request.response);    
+                    token = data.access_token;
+ 
+                    document.getElementById("sendBtn").disabled = false;
+ 
+                    hubConnection.start()       // начинаем соединение с хабом
+                    .catch(err => {  
+                        console.error(err.toString());
+                        document.getElementById("loginBtn").disabled = true;
+                        document.getElementById("sendBtn").disabled = true;
+                    });
+                }
+                else {
+                    console.log("Status", request.status);
+                    console.log(request.responseText);
+                }
+            });
+            // отправляем запрос на аутентификацию
+            request.send("username=" + document.getElementById("userName").value +
+                "&password=" + document.getElementById("userPassword").value);
+        });
+    </script>
+
 

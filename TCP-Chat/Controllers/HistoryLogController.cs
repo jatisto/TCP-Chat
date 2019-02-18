@@ -23,8 +23,11 @@ namespace TCP_Chat.Controllers {
         }
         public IActionResult Index (string date, string name, int page = 1) {
 
+
             int pageSize = 15;
             var userId = _context.Users.FirstOrDefault (u => u.UserName == name);
+
+            //Log Поиск если заданы  и имя и дата
 
             if (name != null && date != null) {
                 DateTimeOffset dtFrom = DateTime.ParseExact (date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
@@ -96,6 +99,7 @@ namespace TCP_Chat.Controllers {
 
             return View (viewModel);
         }
+
 
     }
 }

@@ -28,28 +28,12 @@ namespace TCP_Chat.Controllers {
             _context = context;
         }
         #endregion
+
+        //Метод для редиректа пользователя на страницу чата, если он залогинен
         public IActionResult Index () {
             if (_signInManager.IsSignedIn (User)) {
                 return RedirectToAction ("Chat2", "Home");
             }
-            return View ();
-        }
-
-        public IActionResult Privacy () {
-
-            return View ();
-        }
-
-        public IActionResult Chat () {
-            var user = _userManager.GetUserName (User);
-            var userId = _userManager.GetUserId (User);
-            if (user != null) {
-
-                ViewData["User"] = user.ToString ();
-                ViewData["UserId"] = userId.ToString ();
-            }
-            ViewData["UserAll"] = new SelectList (_context.Users.Where (a => a.Id != userId), "Id", "UserName");
-
             return View ();
         }
 
@@ -58,26 +42,16 @@ namespace TCP_Chat.Controllers {
             return View (new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        //Метод который возвращает View чата
         public IActionResult Chat2 () {
 
             return View ();
         }
 
+        //Метод который возвращает View групового чата
         public IActionResult ChatGroup () {
 
             return View ();
         }
-
-        [HttpGet]
-        public string ListUsersConnection () {
-
-            List<string> listUserConnected = new List<string> ();
-            var result = _context.Connections.Where (a => a.Connected == true);
-            foreach (var item in result) {
-                listUserConnected.Add (item.Name);
-            }
-            return JsonConvert.SerializeObject (listUserConnected);
-        }
-
     }
 }
