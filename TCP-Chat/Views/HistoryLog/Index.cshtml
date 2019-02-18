@@ -1,0 +1,101 @@
+@model IEnumerable<TCP_Chat.Models.HistoryLog>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" asp-action="Index">
+
+    <div class="form-group" id="dateActionFrom">                
+        <label class="control-label"><h4 style="color: white">Введите дату поиска:</h4></label>
+        <input 
+        id="dateActionFromAsset" 
+        type="date" 
+        class="form-control" 
+        name="date"
+        placeholder="Введите дату поиска в формате ДД.ММ.ГГГГ"
+        />
+    </div>
+    
+    <div class="form-group" id="dateActionFrom">   
+        <input 
+        id="dateActionFromAsset" 
+        type="text" 
+        class="form-control" 
+        name="name"
+        placeholder="Введите имя пользователя для поиска"
+        />
+    </div>
+    <select onchange="StatusSend()" id="statusSend">
+        <option name="status" value=""></option>
+        <option name="status" value="Chat">Чат</option>
+        <option name="status" value="GroupChat">Груповой чат</option>
+    </select>
+
+    <input type="submit" onclick="StatusSendButton()" class="btn btn-primary block full-width m-b" value="Send">
+</form>
+
+<table class="table table-striped table-bordered table-hover dataTables-example" style="background-color: white">
+    <thead class="caption">
+        <tr class="gradeX">
+            <th>
+               Отправитель
+            </th>
+            <th>
+               Получатель
+            </th>
+            <th>
+               Сообщение
+            </th>
+            <th>
+               Дата
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserFrom.UserName)
+            </td>
+            <td >
+                @Html.DisplayFor(modelItem => item.UserTo.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Context)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+<script>
+
+    var statusRight;
+    
+
+    function StatusSend(){        
+        statusRight = document.getElementById("statusSend").value;
+    }
+
+    function StatusSendButton(){          
+        
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Index", "HistoryLog")',
+            data: {
+                status: statusRight
+            },
+            success: function (data) {
+                console.log('success!');
+            }
+        });
+    }
+
+</script>
