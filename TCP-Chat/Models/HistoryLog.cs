@@ -11,5 +11,6 @@ namespace TCP_Chat.Models {
         public string Context { get; set; }
         public DateTimeOffset Date { get; set; }
         public bool Status { get; set; }
+        public string UserGroupNik { get; set; }
     }
 }

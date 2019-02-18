@@ -1,4 +1,6 @@
-@model IEnumerable<TCP_Chat.Models.HistoryLog>
+   
+@using TCP_Chat.ViewModels
+@model HistoryLogVM
 
 @{
     ViewData["Title"] = "Index";
@@ -40,6 +42,9 @@
                Получатель
             </th>
             <th>
+               Груповой чат Nik
+            </th>
+            <th>
                Сообщение
             </th>
             <th>
@@ -48,22 +53,45 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.HistoryLogs)
         {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.UserFrom.UserName)
+                @item.UserFrom.UserName
             </td>
             <td >
-                @Html.DisplayFor(modelItem => item.UserTo.UserName)
+                @item.UserTo.UserName
+            </td>
+            <td >
+                @item.UserGroupNik
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Context)
+                @item.Context
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Date)
+                @item.Date
             </td>
         </tr>
         }
     </tbody>
 </table>
+
+
+@if (Model.PageViewModel.HasPreviousPage)
+{
+    <a asp-action="Index"
+        asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+        class="btn btn-default btn">
+         <i class="glyphicon glyphicon-chevron-left"></i>
+        Назад
+    </a>
+}
+@if (Model.PageViewModel.HasNextPage)
+{
+    <a asp-action="Index"
+        asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+        class="btn btn-default btn">
+        Вперед
+        <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+}

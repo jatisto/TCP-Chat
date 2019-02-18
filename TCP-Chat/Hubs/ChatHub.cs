@@ -107,7 +107,19 @@ namespace TCP_Chat.Hubs {
             }
         }
         public async Task SendGroup (string message, string username) {
+            var userName = Context.User.Identity.Name;
+            var userId = _context.Users.FirstOrDefault (u => u.UserName == userName);
             await Clients.Group (groupname).SendAsync ("Receive", message, username);
+
+            HistoryLog hLog = new HistoryLog () {
+                Context = message,
+                UserFromId = userId.Id,
+                UserGroupNik = username,
+                Date = DateTimeOffset.UtcNow,
+                Status = false
+            };
+            _context.Add (hLog);
+            await _context.SaveChangesAsync ();
         }
 
     }
