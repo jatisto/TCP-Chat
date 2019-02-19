@@ -58,9 +58,10 @@
             </td>
             <td>
                 @if(@item.UserToId == null){
-                    <p>Не чего не найдено</p>
+                    @item.UserGroupNik
+                }else{
+                    @item.UserTo.UserName
                 }
-                @item.UserTo.UserName
             </td>
             <td >
                 @item.UserGroupNik

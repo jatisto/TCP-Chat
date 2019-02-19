@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace TCP_Chat.Controllers {
         }
         public async Task<IActionResult> Index (string date, string namefrom, string nameto, int? history, int page = 1, SortState sortOrder = SortState.NameAsc) {
 
-            int pageSize = 13;
+            int pageSize = 10;
             var userIdFrom = _context.Users.FirstOrDefault (u => u.UserName == namefrom);
             var userIdTo = _context.Users.FirstOrDefault (u => u.UserName == nameto);
             IQueryable<HistoryLog> source = _context.HistoryLogs.Where (a => a.Status == true || a.Status == false)
@@ -39,11 +40,6 @@ namespace TCP_Chat.Controllers {
                     DateTimeOffset dtFrom = DateTime.ParseExact (date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
                     source = source.Where (a => a.UserFromId == userIdFrom.Id && a.Date.Year == dtFrom.Year && a.Date.Day == dtFrom.Day && a.Date.Month == dtFrom.Month && a.Status == true || a.Status == false);
-
-                } else if (!String.IsNullOrEmpty (date)) {
-                    DateTimeOffset dtFrom = DateTime.ParseExact (date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-
-                    source = source.Where (a => a.Date.Year == dtFrom.Year && a.Date.Day == dtFrom.Day && a.Date.Month == dtFrom.Month && a.Status == true || a.Status == false);
 
                 } else if (!String.IsNullOrEmpty (namefrom)) {
 
@@ -105,7 +101,14 @@ namespace TCP_Chat.Controllers {
                     break;
             }
 
-            source = source.Where (a => a.Status == true || a.Status == false);
+            if (date != null) {
+                DateTimeOffset dtFrom = DateTime.ParseExact (date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+                source = source.Where (a => a.Date.Year == dtFrom.Year && a.Date.Day == dtFrom.Day && a.Date.Month == dtFrom.Month && a.Status == true);
+
+            } else {
+                source = source.Where (a => a.Status == true || a.Status == false);
+            }
 
             var countAll = await source.CountAsync ();
             var itemsAll = await source.Skip ((page - 1) * pageSize).Take (pageSize).ToListAsync ();
